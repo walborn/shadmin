@@ -1,0 +1,19 @@
+import styled from 'styled-components'
+
+export default styled.input`
+position: relative;
+width: 100%;
+padding: 12px 25px 12px 15px;
+border: 1px solid ${props => props.theme.border.color};
+transition: border-color 0.2s ease-in-out;
+border-radius: 4px;
+outline: none;
+font-size: inherit;
+box-sizing: border-box;
+:focus {
+  border-color: #73a9eb;
+}
+
+::placeholder {
+  color: #95a3b4;
+}`

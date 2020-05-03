@@ -1,0 +1,20 @@
+{
+  "name": "shadmin",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^9.3.6",
+    "node-fetch": "^2.6.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-headroom": "^3.0.0",
+    "react-toastify": "^5.5.0",
+    "styled-components": "^5.1.0",
+    "swr": "^0.2.0"
+  }
+}
