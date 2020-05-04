@@ -53,7 +53,7 @@ const Masters = (props) => {
     console.log(list)
     fetch('https://yogaclubom.herokuapp.com/api/master/list', {
       method: 'post',
-      body: JSON.stringify(list),
+      body: JSON.stringify({ list: list.map(i => ({ id: i.id, name: i.name, description: i.description })) }),
       headers: { 'Content-Type': 'application/json' },
     })
     .then(res => res.json())
