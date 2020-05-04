@@ -20,9 +20,8 @@ font-weight: bold;
 
 const links = [
   { key: '', href: '', title: 'Главная' },
-  { key: 'master', href: 'master/list', title: 'Инструкторы' },
-  { key: 'masterss', href: 'masterss/list', title: 'Server Side' },
-  { key: 'mastersp', href: 'mastersp/list', title: 'Static Props' },
+  { key: 'masters', href: 'masters', title: 'Инструкторы' },
+  // { key: 'shedule', href: 'shedule', title: 'Расписание' },
 ]
 
 const Nav = (props) => {

@@ -1,5 +1,7 @@
-import App from 'next/app';
-import React from 'react';
+import App from 'next/app'
+import React from 'react'
+import { DndProvider } from 'react-dnd'
+import Backend from 'react-dnd-html5-backend'
 import { ThemeProvider } from 'styled-components'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -67,10 +69,12 @@ export default class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props;
     return (
-      <ThemeProvider theme={orange}>
-        <ToastContainer />
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <DndProvider backend={Backend}>
+        <ThemeProvider theme={orange}>
+          <ToastContainer />
+            <Component {...pageProps} />
+        </ThemeProvider>
+      </DndProvider>
     )
   }
 }

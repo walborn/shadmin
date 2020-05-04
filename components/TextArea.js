@@ -16,17 +16,18 @@ const ResizableTextarea = (props) => {
     if (nextRows === prevRows) $self.current.rows = nextRows
     setRows(nextRows)
   }, [])
-  const handleChange = (event) => {
+  const handleChange = (e) => {
     const lineHeight = 24
 
-    const prevRows = event.target.rows
-    event.target.rows = 1
+    const prevRows = e.target.rows
+    e.target.rows = 1
 
-    const nextRows = (event.target.scrollHeight / lineHeight | 0) - 1
+    const nextRows = (e.target.scrollHeight / lineHeight | 0) - 1
 
-    if (nextRows === prevRows) event.target.rows = nextRows
-    setValue(event.target.value)
+    if (nextRows === prevRows) e.target.rows = nextRows
+    setValue(e.target.value)
     setRows(nextRows)
+    props.onChange(e)
   }
 
   return (
