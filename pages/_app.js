@@ -6,6 +6,10 @@ import { ThemeProvider } from 'styled-components'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import useAuth from '../hooks/auth'
+
+
+import AuthContext from '../context/auth'
 
 const orange = {
   border: {
@@ -65,16 +69,37 @@ const orange = {
   MAX_INT: 2147483647
 }
 
-export default class MyApp extends App {
-  render() {
-    const { Component, pageProps } = this.props;
-    return (
+
+const FCApp = ({ Component, pageProps }) => {
+  const { login, logout, token, userId, ready } = useAuth()
+  
+  return (
+    <AuthContext.Provider value={{ login, logout, token, userId }}>
       <DndProvider backend={Backend}>
         <ThemeProvider theme={orange}>
           <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
             <Component {...pageProps} />
         </ThemeProvider>
       </DndProvider>
+    </AuthContext.Provider>
+  )
+}
+
+export default class MyApp extends App {
+  render() {
+    return <FCApp {...this.props} />
+    const { login, logout, token, userId, ready } = useAuth()
+  
+    const { Component, pageProps } = this.props;
+    return (
+      <AuthContext.Provider value={{ login, logout, token, userId }}>
+        <DndProvider backend={Backend}>
+          <ThemeProvider theme={orange}>
+            <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+              <Component {...pageProps} />
+          </ThemeProvider>
+        </DndProvider>
+      </AuthContext.Provider>
     )
   }
 }

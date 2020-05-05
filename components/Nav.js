@@ -19,9 +19,8 @@ font-weight: bold;
 `
 
 const links = [
-  { key: 'shedule', href: 'shedule', title: 'Расписание' },
+  { key: 'lessons', href: 'lessons', title: 'Расписание' },
   { key: 'masters', href: 'masters', title: 'Инструкторы' },
-  // { key: 'shedule', href: 'shedule', title: 'Расписание' },
 ]
 
 const Nav = (props) => {

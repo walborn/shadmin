@@ -3,6 +3,7 @@ import update from 'immutability-helper'
 import fetch from 'node-fetch'
 import useSWR from 'swr'
 import styled from 'styled-components'
+
 import Nav from '../components/Nav'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
@@ -70,7 +71,7 @@ width: auto;
 const fetcher = url => fetch(url).then(r => r.json())
 
 const Masters = () => {
-  const { data, error } = useSWR('https://yogaclubom.herokuapp.com/api/master/list', fetcher)
+  const { data, error } = useSWR('https://yogaclubom.herokuapp.com/api/lesson/list', fetcher)
   const [ list, setList ] = React.useState(data)
   React.useEffect(() => { setList(data); }, [ data ])
 
@@ -88,7 +89,7 @@ const Masters = () => {
     setList([ ...list.slice(0, ix), next, ...list.slice(ix+1) ])
   }
   const handleSubmit = () => {
-    fetch('https://yogaclubom.herokuapp.com/api/master/list', {
+    fetch('https://yogaclubom.herokuapp.com/api/lesson/list', {
       method: 'post',
       body: JSON.stringify({ list: list.map(i => ({ id: i.id, name: i.name, description: i.description })) }),
       headers: { 'Content-Type': 'application/json' },
