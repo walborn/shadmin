@@ -10,16 +10,16 @@ const Item = styled.a`
 text-decoration: none;
 cursor: pointer;
 &:hover {
-  color: ${props => props.theme.color.orange};
+  color: ${props => props.theme.color.blue.light};
 }
 ${props => props.active ? `
-color: ${props.theme.color.orange};
+color: ${props.theme.color.blue.light};
 font-weight: bold;
 ` : 'color: #5d616f;'}
 `
 
 const links = [
-  { key: '', href: '', title: 'Главная' },
+  { key: 'shedule', href: 'shedule', title: 'Расписание' },
   { key: 'masters', href: 'masters', title: 'Инструкторы' },
   // { key: 'shedule', href: 'shedule', title: 'Расписание' },
 ]
@@ -29,18 +29,21 @@ const Nav = (props) => {
   const active = (x => (Array.isArray(x) ? x[0] : ''))(router.pathname.match(/[a-z]+/))
 
   return (
-    <Headroom className={props.className}>
-      <Row>
-        <ul>
-          {
-            links.map(i => (
-              <li key={i.key}>
-                <Link href={`/${i.href}`}><Item active={active === i.key}>{i.title}</Item></Link>
-              </li>
-            ))
-          }
-        </ul>
-      </Row>
+    <Headroom>
+      <div className={props.className}>
+        <Row>
+          <ul>
+            {
+              links.map(i => (
+                <li key={i.key}>
+                  <Link href={`/${i.href}`}><Item active={active === i.key}>{i.title}</Item></Link>
+                </li>
+              ))
+            }
+          </ul>
+          {props.children}
+        </Row>
+      </div>
     </Headroom>
   )
 }
@@ -54,7 +57,7 @@ ul {
   margin: 0;
   li {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 20px 15px;
   }
 }
 `

@@ -32,5 +32,5 @@ cursor: pointer;
 
 
 export default styled.button`
-${props => buttonVariant({ ...props.theme.button, disabled: props.disabled })}
+${props => buttonVariant({ ...props.theme.button, ...props })}
 `

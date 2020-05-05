@@ -3,7 +3,7 @@ import React from 'react'
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 import { ThemeProvider } from 'styled-components'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 
@@ -71,7 +71,7 @@ export default class MyApp extends App {
     return (
       <DndProvider backend={Backend}>
         <ThemeProvider theme={orange}>
-          <ToastContainer />
+          <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
             <Component {...pageProps} />
         </ThemeProvider>
       </DndProvider>

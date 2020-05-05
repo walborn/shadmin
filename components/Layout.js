@@ -1,14 +1,16 @@
+import styled from 'styled-components'
+
 import Head from './Head'
 import Row from './Row'
-import Nav from './Nav'
+import Normilize from './Normilize'
 
 const Layout = props => (
-  <>
+  <div className={props.className}>
     <Head title={props.title} />
-    <Nav />
+    <Normilize />
     <Row>
       <main>{props.children}</main>
     </Row>
-  </>
+  </div>
 )
-export default Layout
+export default styled(Layout)`padding-bottom: 30px;`
