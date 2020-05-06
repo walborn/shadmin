@@ -12,6 +12,8 @@ import Error from '../components/Error'
 import Button from '../components/Button'
 import Card from '../components/Card'
 import { toast } from 'react-toastify'
+import useHttp from '../hooks/http'
+import AuthContext from '../context/auth'
 
 
 const Master = styled(Card)`
@@ -70,9 +72,33 @@ width: auto;
 const fetcher = url => fetch(url).then(r => r.json())
 
 const Masters = () => {
+  const { request, loading } = useHttp()
+  const { token } = React.useContext(AuthContext)
+
   const { data, error } = useSWR('https://yogaclubom.herokuapp.com/api/master/list', fetcher)
   const [ list, setList ] = React.useState(data)
-  React.useEffect(() => { setList(data); }, [ data ])
+  const [ origin, setOrigin ] = React.useState(data)
+
+
+  const fetchList = async () => {
+    try {
+      const fetched = await request(
+        `https://yogaclubom.herokuapp.com/api/master/list`, 'POST',
+        { list: list.map(i => ({ id: i.id, name: i.name, description: i.description })) },
+        { Authorization: `Bearer ${token}` },
+      )
+      
+      if (fetched.message) toast.error(<div><h3>Ошибка!</h3><p>{fetched.message}</p></div>) 
+      else {
+        setOrigin(list)
+        toast.success(<div><h3>Успешно!</h3><p>Инструкторы были обновлены</p></div>)
+      }
+    } catch (e) {
+      toast.error(<div><h3>Ошибка!</h3><p>Something went wrong</p></div>) 
+    }
+  }
+
+  React.useEffect(() => { setList(data); setOrigin(data); }, [ data ])
 
   const moveCard = React.useCallback((dragIndex, hoverIndex) => {
     const dragCard = list[dragIndex]
@@ -80,27 +106,13 @@ const Masters = () => {
   }, [ list ])
 
   if (error) return <Layout><Error>Ошибка в загрузке инструкторов. Обратитесь за помощью к админу</Error></Layout>
-  if (!data) return <Layout><Loading /></Layout>
+  if (!data || loading) return <Layout><Loading /></Layout>
 
   const handleChange = (_id, field) => e => {
     const ix = list.findIndex(i => i._id === _id)
     const next = { ...list[ix], [field]: e.target.value }
     setList([ ...list.slice(0, ix), next, ...list.slice(ix+1) ])
   }
-  const handleSubmit = () => {
-    fetch('https://yogaclubom.herokuapp.com/api/master/list', {
-      method: 'post',
-      body: JSON.stringify({ list: list.map(i => ({ id: i.id, name: i.name, description: i.description })) }),
-      headers: { 'Content-Type': 'application/json' },
-    }).then(r => r.json()).then(r => {
-      const msg = <div><h3>Успешно!</h3><p>Инструкторы были обновлены</p></div>
-      toast.success(msg)
-    }).catch(() => {
-      const msg = <div><h3>Ошибка!</h3><p>Something went wrong!</p></div>
-      toast.error(msg) 
-    })
-  }
-
 
   const renderCard = ({ _id, name, description }, index) => (
     <Master key={_id} index={index} id={_id} moveCard={moveCard}>
@@ -109,12 +121,25 @@ const Masters = () => {
     </Master>
   )
 
+  const noChanges = () => {
+    if (!list) return true
+    if (list.length !== origin.length) return false
+    for (let i = 0; i < list.length; i++) {
+      const a = list[i], b = origin[i]
+      if (a.id !== b.id) return false 
+      if (a.name !== b.name) return false 
+      if (a.description !== b.description) return false
+    }
+    return true
+  }
+
+  console.log(list, data)
   return (
     <>
       <Nav>
         <ButtonSubmit
-          onClick={handleSubmit}
-          disabled={JSON.stringify(list) === JSON.stringify(data)}
+          onClick={fetchList}
+          disabled={noChanges()}
           background="#4d99f5"
         >
           Сохранить изменения

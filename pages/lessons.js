@@ -13,6 +13,7 @@ import Error from '../components/Error'
 import Button from '../components/Button'
 import Card from '../components/Card'
 import { toast } from 'react-toastify'
+import AuthContext from '../context/auth'
 
 
 const Master = styled(Card)`
@@ -73,8 +74,9 @@ const fetcher = url => fetch(url).then(r => r.json())
 const Masters = () => {
   const { data, error } = useSWR('https://yogaclubom.herokuapp.com/api/lesson/list', fetcher)
   const [ list, setList ] = React.useState(data)
+  const { request, loading } = useHttp()
   React.useEffect(() => { setList(data); }, [ data ])
-
+  
   const moveCard = React.useCallback((dragIndex, hoverIndex) => {
     const dragCard = list[dragIndex]
     setList(update(list, { $splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragCard ] ] }))
@@ -92,7 +94,7 @@ const Masters = () => {
     fetch('https://yogaclubom.herokuapp.com/api/lesson/list', {
       method: 'post',
       body: JSON.stringify({ list: list.map(i => ({ id: i.id, name: i.name, description: i.description })) }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${auth.token}`},
     }).then(r => r.json()).then(r => {
       const msg = <div><h3>Успешно!</h3><p>Инструкторы были обновлены</p></div>
       toast.success(msg)
@@ -110,12 +112,24 @@ const Masters = () => {
     </Master>
   )
 
+  const noChanges = () => {
+    if (!list) return true
+    console.log(list, data)
+    if (list.length !== data.length) return false
+    for (let i = 0; i < list.length; i++) {
+      const a = list[i], b = data[i]
+      if (a.id !== b.id) return false 
+      if (a.name !== b.name) return false 
+      if (a.description !== b.description) return false
+    }
+    return true
+  }
   return (
     <>
       <Nav>
         <ButtonSubmit
           onClick={handleSubmit}
-          disabled={JSON.stringify(list) === JSON.stringify(data)}
+          disabled={noChanges()}
           background="#4d99f5"
         >
           Сохранить изменения

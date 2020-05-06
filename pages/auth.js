@@ -40,7 +40,6 @@ const AuthPage = ({ className }) => {
         <Input id="email" placeholder="email address" type="text" name="email" onChange={handleChange}/>
         <Input id="password" placeholder="password" type="password" name="password"onChange={handleChange} />
         <Button onClick={handleSignIn} disabled={loading} background="#4d99f5">Sign In</Button>
-        <Button onClick={handleSignUp} disabled={loading}>Sign Up</Button>
       </Layout>
     </>
   )
@@ -56,6 +55,6 @@ ${Input} {
 ${Button} {
   display: block;
   max-width: 300px;
-  margin: 10px auto;
+  margin: 20px auto;
 }
 `

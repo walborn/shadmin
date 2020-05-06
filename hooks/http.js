@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import fetch from 'node-fetch'
 
 export default () => {
   const [ loading, setLoading ] = useState(false)
@@ -17,7 +18,6 @@ export default () => {
       return data
     } catch (e) {
       setLoading(false)
-      console.log(e.message)
       setError(e.message)
       throw e     
     }
