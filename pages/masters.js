@@ -80,7 +80,7 @@ const Masters = () => {
   const [ origin, setOrigin ] = React.useState(data)
 
 
-  const fetchList = async () => {
+  const updateList = async () => {
     try {
       const fetched = await request(
         `https://yogaclubom.herokuapp.com/api/master/list`, 'POST',
@@ -133,12 +133,11 @@ const Masters = () => {
     return true
   }
 
-  console.log(list, data)
   return (
     <>
       <Nav>
         <ButtonSubmit
-          onClick={fetchList}
+          onClick={updateList}
           disabled={noChanges()}
           background="#4d99f5"
         >

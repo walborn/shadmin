@@ -16,7 +16,7 @@ import useHttp from '../hooks/http'
 import AuthContext from '../context/auth'
 
 
-const Master = styled(Card)`
+const Lesson = styled(Card)`
 position: relative;
 margin: 10px 0;
 padding: 20px;
@@ -71,7 +71,7 @@ width: auto;
 
 const fetcher = url => fetch(url).then(r => r.json())
 
-const Masters = () => {
+const Lessons = () => {
   const { request, loading } = useHttp()
   const { token } = React.useContext(AuthContext)
 
@@ -79,19 +79,18 @@ const Masters = () => {
   const [ list, setList ] = React.useState(data)
   const [ origin, setOrigin ] = React.useState(data)
 
-
-  const fetchList = async () => {
+  const updateList = async () => {
     try {
       const fetched = await request(
         `https://yogaclubom.herokuapp.com/api/lesson/list`, 'POST',
-        { list: list.map(i => ({ id: i.id, name: i.name, description: i.description })) },
+        { list },
         { Authorization: `Bearer ${token}` },
       )
       
       if (fetched.message) toast.error(<div><h3>Ошибка!</h3><p>{fetched.message}</p></div>) 
       else {
         setOrigin(list)
-        toast.success(<div><h3>Успешно!</h3><p>Инструкторы были обновлены</p></div>)
+        toast.success(<div><h3>Успешно!</h3><p>Расписание было обновлено</p></div>)
       }
     } catch (e) {
       toast.error(<div><h3>Ошибка!</h3><p>Something went wrong</p></div>) 
@@ -105,7 +104,7 @@ const Masters = () => {
     setList(update(list, { $splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragCard ] ] }))
   }, [ list ])
 
-  if (error) return <Layout><Error>Ошибка в загрузке инструкторов. Обратитесь за помощью к админу</Error></Layout>
+  if (error) return <Layout><Error>Ошибка запроса получения расписания.<br />Обратитесь за помощью к админу</Error></Layout>
   if (!data || loading) return <Layout><Loading /></Layout>
 
   const handleChange = (_id, field) => e => {
@@ -114,11 +113,13 @@ const Masters = () => {
     setList([ ...list.slice(0, ix), next, ...list.slice(ix+1) ])
   }
 
-  const renderCard = ({ _id, name, description }, index) => (
-    <Master key={_id} index={index} id={_id} moveCard={moveCard}>
-      <Input value={name} placeholder="name" onChange={handleChange(_id, 'name')} />
-      <TextArea value={description} placeholder="description" onChange={handleChange(_id, 'description')}/>
-    </Master>
+  const renderCard = (lesson, index) => (
+    <Lesson key={lesson._id} index={index} id={lesson._id} moveCard={moveCard}>
+      <Input value={lesson.master} placeholder="master" onChange={handleChange(lesson._id, 'master')} />
+      <Input value={lesson.day} placeholder="day" onChange={handleChange(lesson._id, 'day')} />
+      <Input value={lesson.time} placeholder="time" onChange={handleChange(lesson._id, 'time')} />
+      <TextArea value={lesson.title} placeholder="title" onChange={handleChange(lesson._id, 'title')}/>
+    </Lesson>
   )
 
   const noChanges = () => {
@@ -126,30 +127,28 @@ const Masters = () => {
     if (list.length !== origin.length) return false
     for (let i = 0; i < list.length; i++) {
       const a = list[i], b = origin[i]
-      if (a.id !== b.id) return false 
-      if (a.name !== b.name) return false 
-      if (a.description !== b.description) return false
+      for (i of [ 'day', 'duration', 'time', 'master', 'title', 'room', 'note', 'level', 'hidden' ])
+        if (a[i] !== b[i]) return false
     }
     return true
   }
 
-  console.log(list, data)
   return (
     <>
       <Nav>
         <ButtonSubmit
-          onClick={fetchList}
+          onClick={updateList}
           disabled={noChanges()}
           background="#4d99f5"
         >
           Сохранить изменения
         </ButtonSubmit>
       </Nav>
-      <Layout title="Master list | Shadmin">
+      <Layout title="Lesson list | Shadmin">
         {(list || data).map((i, index) => renderCard(i, index))}
       </Layout>
     </>
   )
 }
 
-export default Masters
+export default Lessons
