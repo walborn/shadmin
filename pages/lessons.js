@@ -69,23 +69,19 @@ width: auto;
 }
 `
 
-const fetcher = url => fetch(url).then(r => r.json())
+const fetcher = url => fetch(`https://yogaclubom.herokuapp.com/api/${url}`).then(r => r.json())
 
 const Lessons = () => {
   const { request, loading } = useHttp()
   const { token } = React.useContext(AuthContext)
 
-  const { data, error } = useSWR('https://yogaclubom.herokuapp.com/api/lesson/list', fetcher)
+  const { data, error } = useSWR('lesson/list', fetcher)
   const [ list, setList ] = React.useState(data)
   const [ origin, setOrigin ] = React.useState(data)
 
   const updateList = async () => {
     try {
-      const fetched = await request(
-        `https://yogaclubom.herokuapp.com/api/lesson/list`, 'POST',
-        { list },
-        { Authorization: `Bearer ${token}` },
-      )
+      const fetched = await request('lesson/list', 'POST', { list }, { Authorization: `Bearer ${token}` } )
       
       if (fetched.message) toast.error(<div><h3>Ошибка!</h3><p>{fetched.message}</p></div>) 
       else {

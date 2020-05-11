@@ -69,21 +69,19 @@ width: auto;
 }
 `
 
-const fetcher = url => fetch(url).then(r => r.json())
+const fetcher = url => fetch(`https://yogaclubom.herokuapp.com/api/${url}`).then(r => r.json())
 
 const Masters = () => {
   const { request, loading } = useHttp()
   const { token } = React.useContext(AuthContext)
 
-  const { data, error } = useSWR('https://yogaclubom.herokuapp.com/api/master/list', fetcher)
+  const { data, error } = useSWR('master/list', fetcher)
   const [ list, setList ] = React.useState(data)
   const [ origin, setOrigin ] = React.useState(data)
 
-
   const updateList = async () => {
     try {
-      const fetched = await request(
-        `https://yogaclubom.herokuapp.com/api/master/list`, 'POST',
+      const fetched = await request('master/list', 'POST',
         { list: list.map(i => ({ id: i.id, name: i.name, description: i.description })) },
         { Authorization: `Bearer ${token}` },
       )

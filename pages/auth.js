@@ -21,13 +21,13 @@ const AuthPage = ({ className }) => {
   const handleChange = (e) => setCredentials({ ...credentials, [e.target.name]: e.target.value })
   const handleSignUp = async () => {
     try {
-      const data = await request('https://yogaclubom.herokuapp.com/api/auth/signup', 'POST', { ...credentials })
+      const data = await request('auth/signup', 'POST', { ...credentials })
       toast(data.message)
     } catch (e) {}
   }
   const handleSignIn = async () => {
     try {
-      const data = await request('https://yogaclubom.herokuapp.com/api/auth/signin', 'POST', { ...credentials })
+      const data = await request('auth/signin', 'POST', { ...credentials })
       auth.login(data.token, data.userId)
       if (data.token) router.push('/masters')
       else toast.error(data.message) 
