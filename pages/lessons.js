@@ -96,6 +96,13 @@ const getLessons = lessons => {
   if (!Array.isArray(lessons)) return [ [], [], [], [], [], [], [] ]
   const list = lessons.reduce((r, i) => { r[i.day].push(i); return r }, [ [], [], [], [], [], [], [] ])
 
+  for (let i = 0; i < list.length; i++) {
+    for (let j = 0; j < list[i].length; j++) {
+      list[i][j].day = `${list[i][j].day}`
+      list[i][j].time = `${list[i][j].time}`
+      list[i][j].duration = `${list[i][j].duration}`
+    }
+  }
   const compare = (a, b) => {
       if (+a.time < +b.time) return -1
       if (+a.time > +b.time) return 1
@@ -158,6 +165,7 @@ const Lessons = () => {
   }
 
   const noChanges = () => {
+    console.log(list[day], origin[day])
     if (!list) return true
     if (list.length !== origin.length) return false
     for (let day = 0; day < 7; day++)
@@ -176,6 +184,7 @@ const Lessons = () => {
     { key: '6', children: 'Сб' },
     { key: '0', children: 'Вс' },
   ]
+
   return (
     <>
       <Nav />
