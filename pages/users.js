@@ -8,8 +8,6 @@ import Loading from '../components/Loading'
 import Error from '../components/Error'
 import Card from '../components/Card'
 import useHttp from '../hooks/http'
-import AuthContext from '../context/auth'
-
 
 const User = styled(Card)`
 position: relative;

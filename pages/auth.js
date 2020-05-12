@@ -14,10 +14,9 @@ import Layout from '../components/Layout'
 const AuthPage = ({ className }) => {
   const router = useRouter()
   const auth = React.useContext(AuthContext)
-  const { loading, error, request, clearError } = useHttp()
+  const { loading, error, request } = useHttp()
   const [ credentials, setCredentials ] = React.useState({ email: '', password: '' })
 
-  // React.useEffect(() => { toast(error); clearError() }, [error, clearError])
   const handleChange = (e) => setCredentials({ ...credentials, [e.target.name]: e.target.value })
   const handleSignUp = async () => {
     try {
@@ -35,7 +34,7 @@ const AuthPage = ({ className }) => {
   }
   return (
     <>
-      {auth.token && <Nav />}
+      <Nav />
       <Layout className={className}>
         <Input id="email" placeholder="email address" type="text" name="email" onChange={handleChange}/>
         <Input id="password" placeholder="password" type="password" name="password"onChange={handleChange} />
