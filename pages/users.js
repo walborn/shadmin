@@ -44,8 +44,11 @@ background: ${props => props.theme.background.gradient};
 
 const Users = () => {
   const { request, loading } = useHttp()
-  const { token } = JSON.parse(localStorage.getItem('userData'))
-  const fetcher = url => request(url, 'GET', null, { Authorization: `Bearer ${token}` })
+  const fetcher = url => {
+    if (!localStorage) return Promise.resolve()
+    const { token } = JSON.parse(localStorage.getItem('userData'))
+    return request(url, 'GET', null, { Authorization: `Bearer ${token}` })
+  }
 
   const { data, error } = useSWR('user/list', fetcher)
   const [ list, setList ] = React.useState(data)

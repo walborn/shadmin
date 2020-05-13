@@ -9,7 +9,7 @@ const Index = () => {
   const { request, loading } = useHttp()
 
   React.useEffect(() => {
-    const { token, userId } = JSON.parse(localStorage.getItem('userData')) || {}
+    const { token, userId } = JSON.parse(window.localStorage.getItem('userData')) || {}
     Router.prefetch('/masters')
     request(`user/item/${userId}`, 'GET', null, { Authorization: `Bearer ${token}` })
       .then(({ _id }) => router.push(_id ? '/masters' : '/auth'))
