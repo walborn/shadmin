@@ -48,7 +48,7 @@ ${props => props.disabled ? 'opacity: 0.7;' : ''}
 position: relative;
 width: 100%;
 padding: 12px 25px 12px 15px;
-border: 1px solid ${props => props.theme.border.color};
+border: 1px solid ${props => props.theme.border.color.index};
 transition: border-color 0.2s ease-in-out;
 border-radius: 4px;
 outline: none;
@@ -56,10 +56,13 @@ font-size: inherit;
 box-sizing: border-box;
 line-height: 24px;
 resize: none;
+background: ${props => props.theme.background.default};
+color: ${props => props.theme.font.color.disabled};
 :focus {
-  border-color: #73a9eb;
+  border-color: ${props => props.theme.border.color.hover};
+  color: ${props => props.theme.font.color.index};
 }
 
 ::placeholder {
-  color: #95a3b4;
+  color: ${props => props.theme.font.color.disabled};
 }`

@@ -10,12 +10,15 @@ const Item = styled.a`
 text-decoration: none;
 cursor: pointer;
 &:hover {
-  color: ${props => props.theme.color.orange};
+  color: ${props => props.theme.font.color.hover};
 }
-${props => props.active ? `
-color: ${props.theme.color.orange};
+${props => props.active
+  ? `
+color: ${props.theme.font.color.active};
 font-weight: bold;
-` : 'color: #5d616f;'}
+` : `
+color: ${props => props.theme.font.color.index};
+`}
 `
 
 const links = [
@@ -48,8 +51,8 @@ const Nav = (props) => {
 }
 
 export default styled(Nav)`
-background: #ffffff;
-border-bottom: 1px solid ${props => props.theme.border.color};
+background: ${props => props.theme.background.inner};
+border-bottom: 1px solid ${props => props.theme.border.shadow.index};
 ul {
   list-style: none;
   padding: 0;

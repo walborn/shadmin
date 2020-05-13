@@ -16,33 +16,44 @@ const atom = {
     index: '16px/1.5 normal normal',
     family: "Open Sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
     size: '1rem',
+    color: {
+      index: '#efdab9',
+      hover: '#ebac00',
+      active: '#78b0a0',
+      disabled: '#8e8373',
+    },
   },
-  color: {
-    default: '#efdab9',
-    pale: '#8e8373',
-    highlight: '#78b0a0',
-    hover: '#ebac00',
-    border: '#4e4b4d',
+  border: {
+    index: '1px solid #1a191a',
+    color: {
+      index: 'transparent', // '#4e4b4d',
+      hover: '#343233',
+    },
+    shadow: {
+      index: 'inset 0 0 3px #2c2a2b, 0 0 8px #2c2a2b',
+      hover: 'inset 0 0 3px #272526, 0 0 8px #272526',
+    },
   },
   button: {
-    color: '#343233',
+    color: {
+      index: '#343233',
+      hover: '#343233',
+    },
     background: {
       index: '#ffd152',
       hover: '#ffc31f',
     },
     border: {
+      index: 'none',
+      hover: 'none',
       radius: '5px',
-      edge: 'transparent',
     }
   },
   background: {
-    color: '#fafbfe',
-    gradient: 'radial-gradient(ellipse closest-side at 50% 50%, #3a3f45, #37383c 25%, #fafbfe)',
-    nav: '#2C2A2B',
-  },
-  shadow: {
-    index: 'inset 0 1px 1px #e7eaf3, 0 0 8px #e7eaf3',
-    hover: 'inset 0 1px 1px #d4d8df, 0 0 8px #d4d8df',
+    index: 'radial-gradient(ellipse closest-side at 50% 50%, #3a3f45, #37383c 25%, #343233)',
+    default: '#343233',
+    inner: '#2c2a2b',
+    input: '#1a191a',
   },
   MAX_INT: 2147483647
 }
@@ -112,7 +123,7 @@ const FCApp = ({ Component, pageProps }) => {
   return (
     <AuthContext.Provider value={{ login, logout, token, userId }}>
       <DndProvider backend={Backend}>
-        <ThemeProvider theme={orange}>
+        <ThemeProvider theme={atom}>
           <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
             <Component {...pageProps} />
         </ThemeProvider>

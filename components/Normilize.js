@@ -20,10 +20,10 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => theme.background.color};
-  color: ${({ theme }) => theme.font.color.text};
-  font-family: ${({ theme }) => theme.font.family};
-  font-size: ${({ theme }) => theme.font.size};
+  background: ${props => props.theme.background.index};
+  color: ${props => props.theme.font.color.index};
+  font-family: ${props => props.theme.font.family};
+  font-size: ${props => props.theme.font.size};
 }
 
 #__next {
@@ -56,14 +56,14 @@ body {
 }
 
 .Toastify__toast--success {
-  color: #fff !important;
-  background-color: #4d99f5 !important;
+  color: ${props => props.theme.button.color.index}  !important;
+  background-color: ${props => props.theme.button.background.index} !important;
   font-size: 14px !important;
   line-height: 1.4 !important;
 }
 
 .Toastify__progress-bar--success {
-  background: #fff !important;
+  background: ${props => props.theme.button.color.index}  !important;
   height: 3px !important;
 }
 `

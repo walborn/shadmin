@@ -12,7 +12,7 @@ position: relative;
   width: 14px;
   height: 14px;
   transform: translateY(-50%);
-  fill: ${props => props.theme.border.color};
+  fill: ${props => props.theme.border.color.index};
 }
 `
 const Input = styled.input`
@@ -20,18 +20,22 @@ ${props => props.disabled ? 'opacity: 0.7;' : ''}
 position: relative;
 padding: 12px 25px 12px 15px;
 width: 100%;
-border: 1px solid ${props => props.theme.border.color};
+border: 1px solid ${props => props.theme.border.color.index};
 transition: border-color 0.2s ease-in-out;
 border-radius: 4px;
 outline: none;
 font-size: inherit;
 box-sizing: border-box;
+background: ${props => props.theme.background.default};
+color: ${props => props.theme.font.color.disabled};
 :focus {
-  border-color: #73a9eb;
+  border-color: ${props => props.theme.border.color.hover};
+  color: ${props => props.theme.font.color.index};
 }
 
 ::placeholder {
-  color: #95a3b4;
+  color: ${props => props.theme.font.disabled};
+
 }`
 
 const minutes = function(props, propName, componentName) {

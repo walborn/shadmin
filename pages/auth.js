@@ -38,7 +38,7 @@ const AuthPage = ({ className }) => {
       <Layout className={className}>
         <Input id="email" placeholder="email address" type="text" name="email" onChange={handleChange}/>
         <Input id="password" placeholder="password" type="password" name="password"onChange={handleChange} />
-        <Button onClick={handleSignIn} disabled={loading} background="#4d99f5">Sign In</Button>
+        <Button onClick={handleSignIn} disabled={loading}>Sign In</Button>
       </Layout>
     </>
   )

@@ -13,6 +13,6 @@ position: relative;
   top: 50%;
   right: 14px;
   transform: translateY(-50%);
-  color: ${props => props.theme.border.color};
+  color: ${props => props.theme.border.color.index};
 }
 `

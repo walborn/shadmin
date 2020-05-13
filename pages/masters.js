@@ -24,13 +24,13 @@ margin: 10px 0;
 padding: 20px;
 text-align: center;
 box-sizing: border-box;
-box-shadow: ${props => props.theme.shadow.index};
+box-shadow: ${props => props.theme.border.shadow.index};
 border-radius: 6px;
 transition: opacity .3s ease-in-out;
-background-color: #ffffff;
+background: ${props => props.theme.background.gradient};
 &:hover {
   opacity: 1;
-  box-shadow: ${props => props.theme.shadow.hover};
+  box-shadow: ${props => props.theme.border.shadow.hover};
   &:before {
     content: '⋮';
     position: absolute;

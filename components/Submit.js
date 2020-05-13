@@ -1,12 +1,4 @@
 import styled from 'styled-components'
-import { darken } from 'polished'
-
-const green = {
-  active: '#26cb7c',
-  hover: '#20b86f',
-}
-
-/* <div className="submit"><button onClick={this.handleSubmit} disabled={disabled}><SubmitSVG /></button></div> */
 
 const GreenButton = styled.button`
 position: fixed;
@@ -17,24 +9,23 @@ width: 60px;
 height: 60px;
 margin: 0;
 padding: 0;
-color: rgb(255, 255, 255);
+color: ${props => props.theme.button.color.index};
 cursor: pointer;
-box-shadow: rgba(24, 48, 85, 0.3) 0 3px 8px 0;
 line-height: 1em;
 align-items: center;
 white-space: nowrap;
 justify-content: center;
-background-color: ${green.active};
+background: ${props => props.theme.button.background.index};
 border-width: 1px;
 border-style: solid;
 border-image: initial;
 outline: none;
 border-color: transparent;
-border-radius: 60px;
+border-radius: 50%;
 text-decoration: none;
 transition: all 250ms ease-out 0s;
 &:hover {
-  background-color: ${green.hover};
+  background: ${props => props.theme.button.background.hover};
 }
 &:disabled {
   display: none;

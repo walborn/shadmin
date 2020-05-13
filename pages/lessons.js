@@ -43,14 +43,14 @@ margin: 10px 0;
 padding: 20px;
 text-align: center;
 box-sizing: border-box;
-box-shadow: ${props => props.theme.shadow.index};
+box-shadow: ${props => props.theme.border.shadow.index};
 border-radius: 6px;
 transition: opacity .3s ease-in-out;
-background-color: #ffffff;
+background: ${props => props.theme.background.inner};
 opacity: .95;
 &:hover {
   opacity: 1;
-  box-shadow: ${props => props.theme.shadow.hover};
+  box-shadow: ${props => props.theme.border.shadow.hover};
 }
 > *:not(:last-child) {
   margin-bottom: 10px;
@@ -61,7 +61,7 @@ opacity: .95;
 const Week = styled.div`
 margin-top: 20px;
 white-space: nowrap;
-box-shadow: ${props => props.theme.shadow.index};
+box-shadow: ${props => props.theme.border.shadow.index};
 `;
 
 const Day = styled.div`
@@ -70,14 +70,14 @@ box-sizing: border-box;
 width: calc(100%/7);
 padding: 5px 0;
 font-weight: 600;
-color: ${props => props.theme.color.gray.dark};
+color: ${props => props.theme.font.color.index};
 border-left: 0 none;
 text-align: center;
 outline: none;
 cursor: pointer;
 transition: background-color 0.2s;
 &:first-child {
-  border-left: 1px solid ${props => props.theme.color.gray.pale};
+  border-left: 1px solid ${props => props.theme.font.color.disabled};
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
@@ -86,13 +86,13 @@ transition: background-color 0.2s;
   border-bottom-right-radius: 4px;
 }
 &:hover, &.overlapped {
-  background-color: ${lighten(0.05, '#fbe1c2')};
-  border: 1px solid ${lighten(0.05, '#fbe1c2')};
+  background: ${props => props.theme.background.hover};
+  border: ${props => props.theme.border.index};
 } 
 ${(props) => props.active
 ? `
-background-color: #fbe1c2;
-border: 1px solid ${lighten(0.2, props.theme.color.orange)}`
+background: ${props => props.theme.background.gradient};
+border: 1px solid ${lighten(0.2, props.theme.font.color.active)}`
 : ''}`
 
 const Controls = styled.div`
@@ -100,10 +100,10 @@ const Controls = styled.div`
   width: 32px;
   height: 32px;
   margin: 10px;
-  fill: ${props => props.theme.color.gray.pale};
+  fill: ${props => props.theme.font.color.disabled};
   cursor: pointer;
   &:hover {
-    fill: ${props => darken(.2, props.theme.color.gray.pale)};
+    fill: ${props => darken(.2, props.theme.font.color.disabled)};
   } 
 }
 `
@@ -115,7 +115,7 @@ top: 8px;
 right: 8px;
 width: 16px;
 height: 16px;
-fill: ${props => props.theme.color.gray.pale};
+fill: ${props => props.theme.font.color.disabled};
 `
 const weekdays = [ 'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб' ];
 

@@ -8,7 +8,7 @@ left: 0;
 right: 0;
 bottom: 0;
 z-index: 1001;
-background: radial-gradient(rgba(255,255,255,1) 16%,rgba(255,255,255,0.5) 100%);
+background: ${props => props.theme.background.index};
 svg {
   position: absolute;
   top: 50%;

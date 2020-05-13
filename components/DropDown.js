@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { findDOMNode } from 'react-dom'
 import styled from 'styled-components'
 
 const Panel = styled(({ value, children, ...props }) => (
@@ -22,11 +21,11 @@ transform: translateY(-50%);
 ${props => {
   if (props.direction === 'top') return `
     border-right: 3px solid transparent;
-    border-bottom: 4px solid ${props.theme.color.gray.mouse};
+    border-bottom: 4px solid ${props.theme.font.color.index};
     border-left: 3px solid transparent;
   `
   if (props.direction === 'bottom') return `
-    border-top: 4px solid ${props.theme.color.gray.mouse};
+    border-top: 4px solid ${props.theme.font.color.index};
     border-right: 3px solid transparent;
     border-left: 3px solid transparent;
   `
@@ -48,10 +47,10 @@ padding: 15px 0;
 overflow-x: hidden;
 overflow-y: auto;
 list-style: none;
-background-color: #fff;
+background: ${props => props.theme.background.inner};
 background-clip: padding-box;
 border-radius: 4px;
-box-shadow: inset 0 1px 1px #e7eaf3, 0 0 8px #e7eaf3;
+box-shadow: ${props => props.theme.border.shadow.hover};
 `
 const Item = styled.li`
 position: relative;
@@ -61,7 +60,7 @@ overflow: hidden;
 font-weight: 600;
 font-size: 13px;
 line-height: 18px;
-color: #5d616f;
+color: ${props => props.theme.font.color.index};
 letter-spacing: .3px;
 white-space: nowrap;
 text-overflow: ellipsis;
@@ -78,17 +77,17 @@ ${Panel} {
   overflow: hidden;
   font-weight: 600;
   font-size: 14px;
-  color: $color-gray--darken;
+  color: ${props => props.theme.font.color.index};
   letter-spacing: 0.4px;
   text-overflow: ellipsis;
-  background-color: $color-white;
+  background: ${props => props.theme.background.inner};
   border: 1px solid $color-border;
   border-radius: 4px;
   cursor: pointer;
 
   ${props => {
     if (props.value) return `
-    color: ${props.theme.color.gray.mouse}
+    color: ${props.theme.font.color.index}
     letter-spacing: 0.3px;
     `
   }}
@@ -104,7 +103,7 @@ ${Panel} {
       left: 0;
       z-index: 1;
       display: inline-block;
-      background-color: $color-white;
+      background: ${props => props.theme.background.index};
       opacity: .6;
     }
     `
@@ -112,7 +111,7 @@ ${Panel} {
   ${props => {
     if (props.readOnly) return `
     text-overflow: ellipsis;
-    background-color: $color-background;
+    background: ${props => props.theme.background.index};
     `
   }}
 }
