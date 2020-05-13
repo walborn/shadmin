@@ -70,14 +70,14 @@ box-sizing: border-box;
 width: calc(100%/7);
 padding: 5px 0;
 font-weight: 600;
-color: ${props => props.theme.font.color.index};
+color: ${props => props.theme.font.color.disabled};
 border-left: 0 none;
 text-align: center;
 outline: none;
 cursor: pointer;
 transition: background-color 0.2s;
 &:first-child {
-  border-left: 1px solid ${props => props.theme.font.color.disabled};
+  border-left: 1px solid ${props => props.theme.background.default};
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
@@ -85,14 +85,17 @@ transition: background-color 0.2s;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
-&:hover, &.overlapped {
-  background: ${props => props.theme.background.hover};
-  border: ${props => props.theme.border.index};
+&:hover {
+  background: ${props => props.theme.button.background.hover};
+  border: ${props => props.theme.button.border.hover};
+  color: ${props => props.theme.button.color.hover};
 } 
 ${(props) => props.active
 ? `
-background: ${props => props.theme.background.gradient};
-border: 1px solid ${lighten(0.2, props.theme.font.color.active)}`
+background: ${props.theme.button.background.index};
+border: ${props.theme.button.border.index};
+color: ${props.theme.button.color.index};
+`
 : ''}`
 
 const Controls = styled.div`
@@ -102,9 +105,7 @@ const Controls = styled.div`
   margin: 10px;
   fill: ${props => props.theme.font.color.disabled};
   cursor: pointer;
-  &:hover {
-    fill: ${props => darken(.2, props.theme.font.color.disabled)};
-  } 
+  :hover { fill: ${props => props.theme.font.color.index}; fill-opacity: 0.6; }
 }
 `
 

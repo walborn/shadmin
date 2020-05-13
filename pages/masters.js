@@ -27,7 +27,7 @@ box-sizing: border-box;
 box-shadow: ${props => props.theme.border.shadow.index};
 border-radius: 6px;
 transition: opacity .3s ease-in-out;
-background: ${props => props.theme.background.gradient};
+background: ${props => props.theme.background.inner};
 &:hover {
   opacity: 1;
   box-shadow: ${props => props.theme.border.shadow.hover};

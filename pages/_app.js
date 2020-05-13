@@ -12,6 +12,10 @@ import useAuth from '../hooks/auth'
 import AuthContext from '../context/auth'
 
 const atom = {
+  red: '#C13F21',
+  orange: '#D36E2D',
+  yellow: '#DDA032',
+  green: '#78AF9F',
   font: {
     index: '16px/1.5 normal normal',
     family: "Open Sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
