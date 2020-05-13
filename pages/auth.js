@@ -17,7 +17,7 @@ const AuthPage = ({ className }) => {
   const { loading, error, request } = useHttp()
   const [ credentials, setCredentials ] = React.useState({ email: '', password: '' })
 
-  const handleChange = (e) => setCredentials({ ...credentials, [e.target.name]: e.target.value })
+  const handleChange = (value, name) => setCredentials({ ...credentials, [name]: value })
   const handleSignUp = async () => {
     try {
       const data = await request('auth/signup', 'POST', { ...credentials })

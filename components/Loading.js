@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import LoadingSVG from '../public/loading.svg'
+import LoadingSVG from '../public/svg/loading.svg'
 
 export default styled(props => <div {...props}><LoadingSVG /></div>)`
 position: fixed;

@@ -10,10 +10,10 @@ const Item = styled.a`
 text-decoration: none;
 cursor: pointer;
 &:hover {
-  color: ${props => props.theme.color.blue.light};
+  color: ${props => props.theme.color.orange};
 }
 ${props => props.active ? `
-color: ${props.theme.color.blue.light};
+color: ${props.theme.color.orange};
 font-weight: bold;
 ` : 'color: #5d616f;'}
 `

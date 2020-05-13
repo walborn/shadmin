@@ -34,6 +34,7 @@ const ResizableTextarea = (props) => {
     <textarea
       ref={$self}
       className={props.className}
+      disabled={props.disabled}
       rows={rows}
       value={value}
       placeholder="Enter your text here..."
@@ -43,6 +44,7 @@ const ResizableTextarea = (props) => {
 }
 
 export default styled(ResizableTextarea)`
+${props => props.disabled ? 'opacity: 0.7;' : ''}
 position: relative;
 width: 100%;
 padding: 12px 25px 12px 15px;

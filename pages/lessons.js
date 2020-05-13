@@ -1,24 +1,28 @@
 import React from 'react'
-import update from 'immutability-helper'
 import fetch from 'node-fetch'
 import useSWR from 'swr'
+import { toast } from 'react-toastify'
+import { lighten, darken } from 'polished'
 import styled from 'styled-components'
+
+import useHttp from '../hooks/http'
+import AuthContext from '../context/auth'
+
 import Nav from '../components/Nav'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
 import TextArea from '../components/TextArea'
 import Loading from '../components/Loading'
 import Error from '../components/Error'
-import Button from '../components/Button'
 import Submit from '../components/Submit'
-import Card from '../components/Card'
 import DropDown from '../components/DropDown'
 import TimeInput from '../components/TimeInput'
 import Duration from '../components/Duration'
-import { toast } from 'react-toastify'
-import useHttp from '../hooks/http'
-import AuthContext from '../context/auth'
-import { lighten } from 'polished'
+
+import DeleteSVG from '../public/svg/delete.svg'
+import DuplicateSVG from '../public/svg/duplicate.svg'
+import NightSVG from '../public/svg/night.svg'
+import DaySVG from '../public/svg/day.svg'
 
 
 const Time = styled.div`
@@ -43,6 +47,7 @@ box-shadow: ${props => props.theme.shadow.index};
 border-radius: 6px;
 transition: opacity .3s ease-in-out;
 background-color: #ffffff;
+opacity: .95;
 &:hover {
   opacity: 1;
   box-shadow: ${props => props.theme.shadow.hover};
@@ -90,6 +95,28 @@ background-color: #fbe1c2;
 border: 1px solid ${lighten(0.2, props.theme.color.orange)}`
 : ''}`
 
+const Controls = styled.div`
+> svg {
+  width: 32px;
+  height: 32px;
+  margin: 10px;
+  fill: ${props => props.theme.color.gray.pale};
+  cursor: pointer;
+  &:hover {
+    fill: ${props => darken(.2, props.theme.color.gray.pale)};
+  } 
+}
+`
+
+const Duplicate = styled(DuplicateSVG)`
+position: absolute;
+${props => props.hidden ? 'display: none;' : ''}
+top: 8px;
+right: 8px;
+width: 16px;
+height: 16px;
+fill: ${props => props.theme.color.gray.pale};
+`
 const weekdays = [ 'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб' ];
 
 const getLessons = lessons => {
@@ -121,9 +148,11 @@ const Lessons = () => {
   const { token } = React.useContext(AuthContext)
 
   const { data, error } = useSWR('lesson/list', fetcher)
-  const [ list, setList ] = React.useState(data)
-  const [ origin, setOrigin ] = React.useState(data)
+  const lessons = getLessons(data)
+  const [ list, setList ] = React.useState(lessons)
+  const [ origin, setOrigin ] = React.useState(lessons)
   const [ day, setDay ] = React.useState(0)
+  const [ nextId, setNextId ] = React.useState(0)
 
   React.useEffect(() => {  
     const lessons = getLessons(data)  
@@ -146,32 +175,42 @@ const Lessons = () => {
     }
   }
 
-  const moveCard = React.useCallback((dragIndex, hoverIndex) => {
-    const dragCard = list[day][dragIndex]
-    const lessons = update(list[day], { $splice: [ [ dragIndex, 1 ], [ hoverIndex, 0, dragCard ] ] })
-    setList(update(list, { $splice: [ [ day, 1 ], [ day, 0, lessons ] ] }))
-  }, [ list ])
-
   if (error) return <Layout><Error>Ошибка запроса получения расписания.<br />Обратитесь за помощью к админу</Error></Layout>
   if (!data || loading) return <Layout><Loading /></Layout>
 
-  const handleChange = (_id, field) => e => {
-    let lessons = list[day];
-    const i = lessons.findIndex(l => l._id === _id)
-    const next = { ...lessons[i], [field]: e.target.value }
+  const handleChange = (id, key) => value => {
+    let lessons = list[day]
+    const i = lessons.findIndex(({ _id }) => _id === id)
+    const next = { ...lessons[i], [key]: value }
     lessons = [ ...lessons.slice(0, i), next, ...lessons.slice(i + 1) ]
 
     setList([ ...list.slice(0, day), lessons, ...list.slice(day + 1) ])
   }
 
+  const handleDuplicate = (id) => () => {
+    let lessons = list[day]
+    const i = lessons.findIndex(({ _id }) => _id === id)
+    lessons = [ ...lessons.slice(0, i+1), { ...lessons[i], _id: nextId }, ...lessons.slice(i+1) ]
+    setNextId(nextId + 1)
+    setList([ ...list.slice(0, day), lessons, ...list.slice(day + 1) ])
+  }
+
+  const handleDelete = (id) => () => {
+    let lessons = list[day]
+    const i = lessons.findIndex(({ _id }) => _id === id)
+    lessons = [ ...lessons.slice(0, i), ...lessons.slice(i+1) ]
+    setList([ ...list.slice(0, day), lessons, ...list.slice(day + 1) ])
+  }
+
   const noChanges = () => {
-    console.log(list[day], origin[day])
-    if (!list) return true
-    if (list.length !== origin.length) return false
-    for (let day = 0; day < 7; day++)
+    if (!origin) return true
+    if (!list) return false
+    for (let day = 0; day < 7; day++) {
+      if (list[day].length !== origin[day].length) return false
       for (let i = 0; i < list[day].length; i++)
         for (let j of [ 'day', 'duration', 'time', 'master', 'title', 'room', 'note', 'level', 'hidden' ])
           if (list[day][i][j] !== origin[day][i][j]) return false
+    }
     return true
   }
 
@@ -200,15 +239,25 @@ const Lessons = () => {
         </Week>
         {
           list[day].map((lesson, index) => (
-            <Lesson key={lesson._id} index={index} id={lesson._id} moveCard={moveCard}>
+            <Lesson key={lesson._id} index={index} id={lesson._id} disabled={lesson.hidden}>
+              <Duplicate hidden={typeof lesson._id === 'string'} />
               <Time>
-                <DropDown value={lesson.day} list={dayList} onChange={handleChange(lesson._id, 'day')} />
-                <TimeInput value={lesson.time} placeholder="time" onChange={handleChange(lesson._id, 'time')} />
-                <Duration value={lesson.duration} placeholder="duration" onChange={handleChange(lesson._id, 'duration')} />
+                <DropDown value={lesson.day} list={dayList} onChange={handleChange(lesson._id, 'day')} disabled={lesson.hidden} />
+                <TimeInput value={lesson.time} placeholder="time" onChange={handleChange(lesson._id, 'time')} disabled={lesson.hidden} />
+                <Duration value={lesson.duration} placeholder="duration" onChange={handleChange(lesson._id, 'duration')} disabled={lesson.hidden} />
               </Time>
-              <Input value={lesson.title} placeholder="title" onChange={handleChange(lesson._id, 'title')} />
-              <Input value={lesson.master} placeholder="master" onChange={handleChange(lesson._id, 'master')} />
-              <TextArea value={lesson.note} placeholder="note" onChange={handleChange(lesson._id, 'note')}/>
+              <Input value={lesson.title} placeholder="title" onChange={handleChange(lesson._id, 'title')} disabled={lesson.hidden} />
+              <Input value={lesson.master} placeholder="master" onChange={handleChange(lesson._id, 'master')} disabled={lesson.hidden} />
+              <TextArea value={lesson.note} placeholder="note" onChange={handleChange(lesson._id, 'note')} disabled={lesson.hidden}/>
+              <Controls>
+                {
+                  lesson.hidden
+                    ? <NightSVG onClick={() => handleChange(lesson._id, 'hidden')(false) }/>
+                    : <DaySVG onClick={() => handleChange(lesson._id, 'hidden')(true) }/>
+                }
+                <DuplicateSVG onClick={handleDuplicate(lesson._id)}/>
+                <DeleteSVG onClick={handleDelete(lesson._id)} />
+              </Controls>
             </Lesson>
           ))
         }

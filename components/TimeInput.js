@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import TimeSVG from '../public/time.svg'
+import TimeSVG from '../public/svg/time.svg'
 
 const Time = styled.div`
 position: relative;
@@ -16,6 +16,7 @@ position: relative;
 }
 `
 const Input = styled.input`
+${props => props.disabled ? 'opacity: 0.7;' : ''}
 position: relative;
 padding: 12px 25px 12px 15px;
 width: 100%;
@@ -56,9 +57,9 @@ const TimeInput = props => {
   const handleBlur = () => {
     if (props.disabled) return
     const [ hours, minutes ] = parse(value)
-    if (hours === undefined) return props.onChange({ target: { value: '' } })
+    if (hours === undefined) return props.onChange('')
     setValue(`${`0${hours}`.slice(-2)}:${`0${minutes}`.slice(-2)}`)
-    props.onChange({ target: { value: getMinutes([ hours, minutes ]) } })
+    props.onChange(getMinutes([ hours, minutes ]))
   }
 
   const handleFocus = () => !props.disabled && $input.current.setSelectionRange(0, 5)

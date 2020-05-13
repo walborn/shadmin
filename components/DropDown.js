@@ -69,6 +69,7 @@ cursor: pointer;
 `
 const Drop = styled.div`
 position: relative;
+${props => props.disabled ? 'opacity: 0.7' : ''};
 ${Panel} {
   position: relative;
   box-sizing: border-box;
@@ -129,20 +130,20 @@ const DropDown = (props) => {
   //   return () => { document.removeEventListener('click', handleDocumentClick) }
   // })
 
-  const handleDocumentClick = (e) => {
-    if (props.disabled && !opened) return null
-    const closest = (el, fn) => el && (fn(el) ? el : closest(el.parentNode, fn))
-    const $parent = findDOMNode(this)
-    const opened = closest(e.target, el => el === $parent)
-    return !opened && setOpened(opened)
-  }
+  // const handleDocumentClick = (e) => {
+  //   if (props.disabled && !opened) return null
+  //   const closest = (el, fn) => el && (fn(el) ? el : closest(el.parentNode, fn))
+  //   const $parent = findDOMNode(this)
+  //   const opened = closest(e.target, el => el === $parent)
+  //   return !opened && setOpened(opened)
+  // }
 
   const handleItemClick = ({ key, readOnly }, position = null) => {
     if (typeof key === 'undefined' || readOnly) return null
     setSelected(key)
     setPosition(position)
     setOpened(false)
-    props.onChange({ target: { value: key } })
+    props.onChange(key)
   }
 
 
@@ -172,7 +173,7 @@ const DropDown = (props) => {
   const value = props.list.find(i => +i.key === +selected)
   return (
     <Drop className={props.className} disabled={props.disabled} opened={opened} onKeyDown={handleKeyDown}>
-      <Panel onClick={() => setOpened(true)} value={value} placeholder={props.placeholder} onClick={() => setOpened(!opened)}>
+      <Panel onClick={() => !props.disabled && setOpened(!opened)} value={value} placeholder={props.placeholder}>
         <Caret direction={opened ? 'top' : 'bottom'} />
       </Panel>
 

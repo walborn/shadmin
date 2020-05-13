@@ -2,7 +2,12 @@ import React from 'react'
 import update from 'immutability-helper'
 import fetch from 'node-fetch'
 import useSWR from 'swr'
+import { toast } from 'react-toastify'
 import styled from 'styled-components'
+
+import useHttp from '../hooks/http'
+import AuthContext from '../context/auth'
+
 import Nav from '../components/Nav'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
@@ -11,10 +16,7 @@ import Loading from '../components/Loading'
 import Error from '../components/Error'
 import Button from '../components/Button'
 import Card from '../components/Card'
-import { toast } from 'react-toastify'
-import useHttp from '../hooks/http'
-import AuthContext from '../context/auth'
-
+import Submit from '../components/Submit'
 
 const Master = styled(Card)`
 position: relative;
@@ -106,9 +108,9 @@ const Masters = () => {
   if (error) return <Layout><Error>Ошибка в загрузке инструкторов. Обратитесь за помощью к админу</Error></Layout>
   if (!data || loading) return <Layout><Loading /></Layout>
 
-  const handleChange = (_id, field) => e => {
+  const handleChange = (_id, key) => value => {
     const ix = list.findIndex(i => i._id === _id)
-    const next = { ...list[ix], [field]: e.target.value }
+    const next = { ...list[ix], [key]: value }
     setList([ ...list.slice(0, ix), next, ...list.slice(ix+1) ])
   }
 
@@ -133,18 +135,11 @@ const Masters = () => {
 
   return (
     <>
-      <Nav>
-        <ButtonSubmit
-          onClick={updateList}
-          disabled={noChanges()}
-          background="#4d99f5"
-        >
-          Сохранить изменения
-        </ButtonSubmit>
-      </Nav>
+      <Nav />
       <Layout title="Master list | Shadmin">
         {(list || data).map((i, index) => renderCard(i, index))}
       </Layout>
+      <Submit onClick={updateList} disabled={noChanges()} />
     </>
   )
 }

@@ -11,6 +11,42 @@ import useAuth from '../hooks/auth'
 
 import AuthContext from '../context/auth'
 
+const atom = {
+  font: {
+    index: '16px/1.5 normal normal',
+    family: "Open Sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+    size: '1rem',
+  },
+  color: {
+    default: '#efdab9',
+    pale: '#8e8373',
+    highlight: '#78b0a0',
+    hover: '#ebac00',
+    border: '#4e4b4d',
+  },
+  button: {
+    color: '#343233',
+    background: {
+      index: '#ffd152',
+      hover: '#ffc31f',
+    },
+    border: {
+      radius: '5px',
+      edge: 'transparent',
+    }
+  },
+  background: {
+    color: '#fafbfe',
+    gradient: 'radial-gradient(ellipse closest-side at 50% 50%, #3a3f45, #37383c 25%, #fafbfe)',
+    nav: '#2C2A2B',
+  },
+  shadow: {
+    index: 'inset 0 1px 1px #e7eaf3, 0 0 8px #e7eaf3',
+    hover: 'inset 0 1px 1px #d4d8df, 0 0 8px #d4d8df',
+  },
+  MAX_INT: 2147483647
+}
+
 const orange = {
   border: {
     color: '#e7eaf3',
@@ -85,21 +121,4 @@ const FCApp = ({ Component, pageProps }) => {
   )
 }
 
-export default class MyApp extends App {
-  render() {
-    return <FCApp {...this.props} />
-    const { login, logout, token, userId, ready } = useAuth()
-  
-    const { Component, pageProps } = this.props;
-    return (
-      <AuthContext.Provider value={{ login, logout, token, userId }}>
-        <DndProvider backend={Backend}>
-          <ThemeProvider theme={orange}>
-            <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
-              <Component {...pageProps} />
-          </ThemeProvider>
-        </DndProvider>
-      </AuthContext.Provider>
-    )
-  }
-}
+export default class MyApp extends App { render() { return <FCApp {...this.props} /> } }

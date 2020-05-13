@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
-export default styled.input`
+export default styled(({ onChange, ...props }) => (
+  <input {...props} onChange={(e) => (typeof onChange === 'function') && onChange(e.target.value, e.target.name)} />
+))`
+${props => props.disabled ? 'opacity: 0.7;' : ''}
 position: relative;
 width: 100%;
 padding: 12px 25px 12px 15px;
