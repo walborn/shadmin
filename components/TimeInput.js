@@ -38,12 +38,7 @@ color: ${props => props.theme.font.color.disabled};
 
 }`
 
-const minutes = function(props, propName, componentName) {
-  const value = props[propName]
-  if (typeof value !== 'string') return new Error(`Invalid TYPE of prop \`${propName}\` supplied to \`${componentName}\`. Validation failed. Value is ${value} [${typeof value}]`);
-  if (!/^\d+&/.test(value)) return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value is not \\d+. Value is ${value} [${typeof value}]`);
-  if (+value < 0 || +value > 1680) return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value is out of range. Value is ${value} [${typeof value}]`);
-}
+
 const timify = value => `${`0${+value / 60 | 0}`.slice(-2)}:${`0${+value % 60}`.slice(-2)}`
 const getMinutes = value => (([ h, m ]) => `${h * 60 + m}`)(value);
 
@@ -119,9 +114,15 @@ const TimeInput = props => {
   )
 }
 
+const Minutes = function(props, propName, componentName) {
+  const value = props[propName]
+  if (typeof value !== 'string') return new Error(`Invalid TYPE of prop \`${propName}\` supplied to \`${componentName}\`. Validation failed. Value is ${value} [${typeof value}]`);
+  if (isNaN(value)) return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value is not \\d+. Value is ${value} [${typeof value}]`);
+  if (+value < 0 || +value > 1680) return new Error(`Invalid prop \`${propName}\` supplied to \`${componentName}\`. Value is out of range. Value is ${value} [${typeof value}]`);
+}
 TimeInput.propTypes = {
   className: PropTypes.string,
-  value: minutes.isRequired,
+  value: Minutes,
   onChange: PropTypes.func.isRequired,
   readOnly: PropTypes.bool,
   disabled: PropTypes.bool,

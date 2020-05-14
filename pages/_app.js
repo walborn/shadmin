@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import useAuth from '../hooks/auth'
 
-
 import AuthContext from '../context/auth'
 
 const atom = {
@@ -22,8 +21,8 @@ const atom = {
     size: '1rem',
     color: {
       index: '#efdab9',
-      hover: '#ebac00',
-      active: '#78b0a0',
+      hover: '#00c78f', // '#ebac00',
+      active: '#02a97a', // '#1A745A', // '#61efce', // '#78b0a0',
       disabled: '#8e8373',
     },
   },
@@ -57,7 +56,7 @@ const atom = {
     index: 'radial-gradient(ellipse closest-side at 50% 50%, #3a3f45, #37383c 25%, #343233)',
     default: '#343233',
     inner: '#2c2a2b',
-    input: '#272526', // '#1a191a',
+    input: '#272526',
   },
   MAX_INT: 2147483647
 }
