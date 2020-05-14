@@ -2,7 +2,6 @@ import React from 'react'
 import fetch from 'node-fetch'
 import useSWR from 'swr'
 import { toast } from 'react-toastify'
-import { lighten, darken } from 'polished'
 import styled from 'styled-components'
 
 import useHttp from '../hooks/http'
@@ -21,9 +20,21 @@ import Duration from '../components/Duration'
 
 import DeleteSVG from '../public/svg/delete.svg'
 import DuplicateSVG from '../public/svg/duplicate.svg'
-import NightSVG from '../public/svg/night.svg'
-import DaySVG from '../public/svg/day.svg'
+import MoonSVG from '../public/svg/moon.svg'
+import SunSVG from '../public/svg/sun.svg'
+import AddSVG from '../public/svg/add.svg'
 
+const Add = styled(props => <div {...props}><AddSVG /></div>)`
+text-align: center;
+> svg {
+  width: 32px;
+  height: 32px;
+  margin: 10px;
+  fill: ${props => props.theme.font.color.disabled};
+  cursor: pointer;
+  :hover { fill: ${props => props.theme.font.color.index}; fill-opacity: 0.6; }
+}
+`
 
 const Time = styled.div`
 > * {
@@ -196,6 +207,12 @@ const Lessons = () => {
     setList([ ...list.slice(0, day), lessons, ...list.slice(day + 1) ])
   }
 
+  const handleAdd = () => {
+    const next = { _id: nextId, day, duration: '', time: '', master: '', title: '', room: '', note: '', level: '', hidden: false }
+    setNextId(nextId + 1)
+    setList([ ...list.slice(0, day), [ ...list[day], next ], ...list.slice(day + 1) ])
+  }
+
   const handleDelete = (id) => () => {
     let lessons = list[day]
     const i = lessons.findIndex(({ _id }) => _id === id)
@@ -253,8 +270,8 @@ const Lessons = () => {
               <Controls>
                 {
                   lesson.hidden
-                    ? <NightSVG onClick={() => handleChange(lesson._id, 'hidden')(false) }/>
-                    : <DaySVG onClick={() => handleChange(lesson._id, 'hidden')(true) }/>
+                    ? <MoonSVG onClick={() => handleChange(lesson._id, 'hidden')(false)}/>
+                    : <SunSVG onClick={() => handleChange(lesson._id, 'hidden')(true)}/>
                 }
                 <DuplicateSVG onClick={handleDuplicate(lesson._id)}/>
                 <DeleteSVG onClick={handleDelete(lesson._id)} />
@@ -262,6 +279,7 @@ const Lessons = () => {
             </Lesson>
           ))
         }
+        <Add onClick={handleAdd} />
       </Layout>
       <Submit onClick={updateList} disabled={noChanges()} />
     </>

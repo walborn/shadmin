@@ -65,6 +65,10 @@ letter-spacing: .3px;
 white-space: nowrap;
 text-overflow: ellipsis;
 cursor: pointer;
+user-select: none;
+:hover {
+  background: ${props => props.theme.background.input};
+}
 `
 const Drop = styled.div`
 position: relative;
@@ -84,6 +88,7 @@ ${Panel} {
   border: 1px solid $color-border;
   border-radius: 4px;
   cursor: pointer;
+  user-select: none;
 
   ${props => {
     if (props.value) return `

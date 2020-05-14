@@ -57,7 +57,7 @@ const atom = {
     index: 'radial-gradient(ellipse closest-side at 50% 50%, #3a3f45, #37383c 25%, #343233)',
     default: '#343233',
     inner: '#2c2a2b',
-    input: '#1a191a',
+    input: '#272526', // '#1a191a',
   },
   MAX_INT: 2147483647
 }

@@ -14,9 +14,11 @@ import Input from '../components/Input'
 import TextArea from '../components/TextArea'
 import Loading from '../components/Loading'
 import Error from '../components/Error'
-import Button from '../components/Button'
 import Card from '../components/Card'
 import Submit from '../components/Submit'
+import DeleteSVG from '../public/svg/delete.svg'
+import DuplicateSVG from '../public/svg/copy2.svg'
+import AddSVG from '../public/svg/add.svg'
 
 const Master = styled(Card)`
 position: relative;
@@ -49,25 +51,27 @@ background: ${props => props.theme.background.inner};
 > *:not(:last-child) {
   margin-bottom: 10px;
 }
-
 `
 
-const ButtonSubmit = styled(Button)`
-padding: 6px 20px;
-width: auto;
-@media only screen and (max-width: 600px) {
-  margin-bottom: 10px;
-  float: right;
+const Controls = styled.div`
+> svg {
+  width: 32px;
+  height: 32px;
+  margin: 10px;
+  fill: ${props => props.theme.font.color.disabled};
+  cursor: pointer;
+  :hover { fill: ${props => props.theme.font.color.index}; fill-opacity: 0.6; }
 }
-@media only screen and (max-width: 400px) {
-  margin-bottom: 10px;
-  width: 100%;
-}
-@media only screen and (min-width: 600px) {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 20px;
+`
+const Add = styled(props => <div {...props}><AddSVG /></div>)`
+text-align: center;
+> svg {
+  width: 32px;
+  height: 32px;
+  margin: 10px;
+  fill: ${props => props.theme.font.color.disabled};
+  cursor: pointer;
+  :hover { fill: ${props => props.theme.font.color.index}; fill-opacity: 0.6; }
 }
 `
 
@@ -80,6 +84,7 @@ const Masters = () => {
   const { data, error } = useSWR('master/list', fetcher)
   const [ list, setList ] = React.useState(data)
   const [ origin, setOrigin ] = React.useState(data)
+  const [ nextId, setNextId ] = React.useState(0)
 
   const updateList = async () => {
     try {
@@ -108,16 +113,35 @@ const Masters = () => {
   if (error) return <Layout><Error>Ошибка в загрузке инструкторов. Обратитесь за помощью к админу</Error></Layout>
   if (!data || loading) return <Layout><Loading /></Layout>
 
-  const handleChange = (_id, key) => value => {
-    const ix = list.findIndex(i => i._id === _id)
-    const next = { ...list[ix], [key]: value }
-    setList([ ...list.slice(0, ix), next, ...list.slice(ix+1) ])
+  const handleChange = (id, key) => value => {
+    const i = list.findIndex(({ _id }) => _id === id)
+    setList([ ...list.slice(0, i), { ...list[i], [key]: value }, ...list.slice(i + 1) ])
+  }
+
+  const handleAdd = () => {
+    setList([ ...list, { _id: nextId, name: '', description: '' } ])
+    setNextId(nextId + 1)
+  }
+
+  const handleDuplicate = (id) => () => {
+    const i = list.findIndex(({ _id }) => _id === id)
+    setList([ ...list.slice(0, i + 1), { ...list[i], _id: nextId }, ...list.slice(i + 1) ])
+    setNextId(nextId + 1)
+  }
+
+  const handleDelete = (id) => () => {
+    const i = list.findIndex(({ _id }) => _id === id)
+    setList([ ...list.slice(0, i), ...list.slice(i + 1) ])
   }
 
   const renderCard = ({ _id, name, description }, index) => (
     <Master key={_id} index={index} id={_id} moveCard={moveCard}>
       <Input value={name} placeholder="name" onChange={handleChange(_id, 'name')} />
       <TextArea value={description} placeholder="description" onChange={handleChange(_id, 'description')}/>
+      <Controls>
+        <DuplicateSVG onClick={handleDuplicate(_id)}/>
+        <DeleteSVG onClick={handleDelete(_id)} />
+      </Controls>
     </Master>
   )
 
@@ -138,6 +162,7 @@ const Masters = () => {
       <Nav />
       <Layout title="Master list | Shadmin">
         {(list || data).map((i, index) => renderCard(i, index))}
+        <Add onClick={handleAdd} />
       </Layout>
       <Submit onClick={updateList} disabled={noChanges()} />
     </>
