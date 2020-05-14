@@ -17,10 +17,10 @@ import Error from '../components/Error'
 import Card from '../components/Card'
 import Submit from '../components/Submit'
 import DeleteSVG from '../public/svg/delete.svg'
-import DuplicateSVG from '../public/svg/copy2.svg'
+import DuplicateSVG from '../public/svg/duplicate.svg'
 import AddSVG from '../public/svg/add.svg'
 
-const Master = styled(Card)`
+const Master = styled(props => props.disabled ? <div {...props} /> : <Card {...props} />)`
 position: relative;
 margin: 10px 0;
 padding: 20px;
@@ -30,24 +30,30 @@ box-shadow: ${props => props.theme.border.shadow.index};
 border-radius: 6px;
 transition: opacity .3s ease-in-out;
 background: ${props => props.theme.background.inner};
+
 &:hover {
   opacity: 1;
   box-shadow: ${props => props.theme.border.shadow.hover};
-  &:before {
-    content: '⋮';
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  &:after {
-    content: '⋮';
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
+  ${props => !props.disabled
+    ? `
+    &:before {
+      content: '⋮';
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &:after {
+      content: '⋮';
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+    }` : ''
   }
 }
+
+
 > *:not(:last-child) {
   margin-bottom: 10px;
 }
@@ -135,10 +141,10 @@ const Masters = () => {
   }
 
   const renderCard = ({ _id, name, description }, index) => (
-    <Master key={_id} index={index} id={_id} moveCard={moveCard}>
-      <Input value={name} placeholder="name" onChange={handleChange(_id, 'name')} />
-      <TextArea value={description} placeholder="description" onChange={handleChange(_id, 'description')}/>
-      <Controls>
+    <Master key={_id} index={index} id={_id} moveCard={moveCard} disabled={!token}>
+      <Input value={name} placeholder="name" onChange={handleChange(_id, 'name')} disabled={!token} />
+      <TextArea value={description} placeholder="description" onChange={handleChange(_id, 'description')} disabled={!token} />
+      <Controls hidden={!token}>
         <DuplicateSVG onClick={handleDuplicate(_id)}/>
         <DeleteSVG onClick={handleDelete(_id)} />
       </Controls>
@@ -162,9 +168,9 @@ const Masters = () => {
       <Nav />
       <Layout title="Master list | Shadmin">
         {(list || data).map((i, index) => renderCard(i, index))}
-        <Add onClick={handleAdd} />
+        <Add onClick={handleAdd} hidden={!token} />
       </Layout>
-      <Submit onClick={updateList} disabled={noChanges()} />
+      <Submit onClick={updateList} disabled={noChanges()} hidden={!token} />
     </>
   )
 }

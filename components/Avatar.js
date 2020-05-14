@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
 import AuthContext from '../context/auth'
 import SignInSVG from '../public/avatar/signin2.svg'
@@ -17,9 +18,9 @@ font-size: 0;
 `
 
 const PlaceholderAvatar = styled(({ auth, ...props }) => (<div {...props}><SignInSVG /></div>))`
-padding: 8px;
+padding: 5px;
 border-radius: 50%;
-background: ${props => props.theme.font.color.active};
+background: ${props => props.active ? props.theme.font.color.active : props.theme.font.color.index};
 font-size: 0;
 :hover {
   background: ${props => props.theme.font.color.hover};
@@ -32,10 +33,12 @@ font-size: 0;
 `
 
 const Avatar = (props) => {
+  const router = useRouter()
+  const active = (x => (Array.isArray(x) ? x[0] : ''))(router.pathname.match(/[a-z]+/))
   const auth = React.useContext(AuthContext)
   return auth.userId
     ? <UserAvatar auth={auth} {...props} />
-    : <Link href="/auth"><a><PlaceholderAvatar {...props} /></a></Link>
+    : <Link href="/auth"><a><PlaceholderAvatar {...props} active={active === 'auth'} /></a></Link>
 }
 
 export default styled(Avatar)``

@@ -52,6 +52,21 @@ const atom = {
       radius: '5px',
     }
   },
+  error: {
+    color: {
+      index: '#343233',
+      hover: '#343233',
+    },
+    background: {
+      index: '#C13F21',
+      hover: '#9a321a',
+    },
+    border: {
+      index: 'none',
+      hover: 'none',
+      radius: '5px',
+    }
+  },
   background: {
     index: 'radial-gradient(ellipse closest-side at 50% 50%, #3a3f45, #37383c 25%, #343233)',
     default: '#343233',

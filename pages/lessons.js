@@ -131,7 +131,7 @@ fill: ${props => props.theme.font.color.disabled};
 `
 const weekdays = [ 'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб' ];
 
-const getLessons = lessons => {
+const getLessons = (lessons, token) => {
   if (!Array.isArray(lessons)) return [ [], [], [], [], [], [], [] ]
   const list = lessons.reduce((r, i) => { r[i.day].push(i); return r }, [ [], [], [], [], [], [], [] ])
 
@@ -140,6 +140,7 @@ const getLessons = lessons => {
       list[i][j].day = `${list[i][j].day}`
       list[i][j].time = `${list[i][j].time}`
       list[i][j].duration = `${list[i][j].duration}`
+      if (!token) list[i][j].hidden = true
     }
   }
   const compare = (a, b) => {
@@ -160,14 +161,14 @@ const Lessons = () => {
   const { token } = React.useContext(AuthContext)
 
   const { data, error } = useSWR('lesson/list', fetcher)
-  const lessons = getLessons(data)
+  const lessons = getLessons(data, token)
   const [ list, setList ] = React.useState(lessons)
   const [ origin, setOrigin ] = React.useState(lessons)
   const [ day, setDay ] = React.useState(0)
   const [ nextId, setNextId ] = React.useState(0)
 
   React.useEffect(() => {  
-    const lessons = getLessons(data)  
+    const lessons = getLessons(data, token)  
     setList(lessons); setOrigin(lessons);
   }, [ data ])
 
@@ -178,7 +179,7 @@ const Lessons = () => {
       
       if (fetched.message) toast.error(<div><h3>Ошибка!</h3><p>{fetched.message}</p></div>) 
       else {
-        const lessons = getLessons(data)  
+        const lessons = getLessons(data, token)  
         setList(lessons); setOrigin(lessons);
         toast.success(<div><h3>Успешно!</h3><p>Расписание было обновлено</p></div>)
       }
@@ -267,7 +268,7 @@ const Lessons = () => {
               <Input value={lesson.title} placeholder="title" onChange={handleChange(lesson._id, 'title')} disabled={lesson.hidden} />
               <Input value={lesson.master} placeholder="master" onChange={handleChange(lesson._id, 'master')} disabled={lesson.hidden} />
               <TextArea value={lesson.note} placeholder="note" onChange={handleChange(lesson._id, 'note')} disabled={lesson.hidden}/>
-              <Controls>
+              <Controls hidden={!token} >
                 {
                   lesson.hidden
                     ? <MoonSVG onClick={() => handleChange(lesson._id, 'hidden')(false)}/>
@@ -279,7 +280,7 @@ const Lessons = () => {
             </Lesson>
           ))
         }
-        <Add onClick={handleAdd} />
+        <Add onClick={handleAdd} hidden={!token} />
       </Layout>
       <Submit onClick={updateList} disabled={noChanges()} />
     </>
