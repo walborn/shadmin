@@ -137,7 +137,7 @@ const orange = {
 
 const FCApp = ({ Component, pageProps }) => {
   const { login, logout, token, userId, ready } = useAuth()
-  
+
   return (
     <AuthContext.Provider value={{ login, logout, token, userId }}>
       <DndProvider backend={Backend}>

@@ -39,11 +39,12 @@ text-align: center;
 const Time = styled.div`
 > * {
   margin: 10px 0;
+  ${props => props.token ? ':first-child { display: none; }' : ''}
 }
 
 @media only screen and (min-width: 400px) {
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: ${props => props.token ? 'auto ' : ''}1fr 1fr;
   column-gap: 10px;
 }
 `
@@ -261,7 +262,7 @@ const Lessons = () => {
             <Lesson key={lesson._id} index={index} id={lesson._id} disabled={lesson.hidden}>
               <Duplicate hidden={typeof lesson._id === 'string'} />
               <Time>
-                <DropDown value={lesson.day} list={dayList} onChange={handleChange(lesson._id, 'day')} disabled={lesson.hidden} />
+                {token && <DropDown value={lesson.day} list={dayList} onChange={handleChange(lesson._id, 'day')} disabled={lesson.hidden} />}
                 <TimeInput value={lesson.time} placeholder="time" onChange={handleChange(lesson._id, 'time')} disabled={lesson.hidden} />
                 <Duration value={lesson.duration} placeholder="duration" onChange={handleChange(lesson._id, 'duration')} disabled={lesson.hidden} />
               </Time>

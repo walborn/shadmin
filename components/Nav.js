@@ -28,8 +28,8 @@ font-weight: bold;
 color: ${props.theme.font.color.active};
 > svg { fill: ${props.theme.font.color.active}; }
 ` : `
-color: ${props.theme.font.color.index};
-> svg { fill: ${props.theme.font.color.index}; }
+color: ${props.theme.font.color.disabled};
+> svg { fill: ${props.theme.font.color.disabled}; }
 `}
 
 @media only screen and (max-width: 780px) {
