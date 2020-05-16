@@ -11,7 +11,7 @@ const Head = props => (
       <link rel="icon" sizes="192x192" href="/touch-icon.png" />
       <link rel="apple-touch-icon" href="/touch-icon.png" />
       <link rel="mask-icon" href="/favicon-mask.svg" color="#49B882" />
-      <link rel="icon" href="/favicon.png" />
+      <link rel="icon" href="/favicon.ico" />
       <meta property="og:url" content={props.url} />
       <meta property="og:title" content={props.title} />
       <meta property="og:description" content={props.description} />
@@ -29,7 +29,7 @@ Head.defaultProps = {
   title: 'Shadmin',
   description: 'Shala admin panel',
   url: '',
-  ogImage: '/favicon.png',
+  ogImage: '/favicon.ico',
   keywords: '',
 }
 
