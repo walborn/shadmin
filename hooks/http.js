@@ -6,8 +6,8 @@ export default () => {
   const [ error, setError ] = useState(null)
   const request = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true)
-    // url = `https://yogaclubom.herokuapp.com/api/${url}`
-    url = `http://localhost/api/${url}`
+    url = `https://yogaclubom.herokuapp.com/api/${url}`
+    // url = `http://localhost/api/${url}`
     try {
       if (body) {
         body = JSON.stringify(body)
