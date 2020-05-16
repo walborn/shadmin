@@ -12,7 +12,7 @@ const Panel = styled(({ value, children, ...props }) => (
 const Caret = styled.div`
 position: absolute;
 top: 50%;
-right: 20px;
+right: 10px;
 display: inline-block;
 width: 0;
 height: 0;
@@ -77,7 +77,7 @@ ${Panel} {
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  padding: 12px 41px 12px 15px;
+  padding: 12px 30px 12px 30px;
   overflow: hidden;
   font-weight: 600;
   font-size: 14px;

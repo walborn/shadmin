@@ -28,7 +28,7 @@ font-weight: bold;
 color: ${props.theme.font.color.active};
 > svg { fill: ${props.theme.font.color.active}; }
 ` : `
-color: ${props.theme.background.default};
+color: ${props.theme.font.color.disabled};
 > svg { fill: ${props.theme.background.default}; }
 `}
 

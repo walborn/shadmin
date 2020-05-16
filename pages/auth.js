@@ -25,12 +25,6 @@ const AuthPage = ({ className }) => {
   const disabled = !credentials.email || !credentials.password
 
   const handleChange = (value, name) => setCredentials({ ...credentials, [name]: value })
-  const handleSignUp = async () => {
-    try {
-      const data = await request('auth/signup', 'POST', { ...credentials })
-      toast(data.message)
-    } catch (e) {}
-  }
   const handleSignIn = async () => {
     if (disabled) return
     try {
@@ -45,9 +39,9 @@ const AuthPage = ({ className }) => {
       <Nav />
       <Layout className={className}>
         <form>
-          <Input id="email" placeholder="email address" type="text" name="email" onChange={handleChange}/>
-          <Input id="password" placeholder="password" type="password" name="password"onChange={handleChange} />
-          <ButtonSubmit onClick={handleSignIn} disabled={loading || disabled}>Sign In</ButtonSubmit>
+          <Input id="email" placeholder="E-mail" type="text" name="email" onChange={handleChange}/>
+          <Input id="password" placeholder="Password" type="password" name="password"onChange={handleChange} />
+          <ButtonSubmit onClick={handleSignIn} disabled={loading || disabled}>Войти</ButtonSubmit>
         </form>
       </Layout>
     </>
@@ -67,3 +61,15 @@ ${Button} {
   margin: 20px auto;
 }
 `
+
+/*
+  const handleSignUp = async () => {
+    try {
+      const data = await request('auth/signup', 'POST', { ...credentials })
+      toast(data.message)
+    } catch (e) {}
+  }
+
+
+  <ButtonSubmit onClick={handleSignUp} disabled={loading || disabled}>Sign Up</ButtonSubmit>
+  */

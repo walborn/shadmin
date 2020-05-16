@@ -9,6 +9,8 @@ import SignInSVG from '../public/avatar/signin2.svg'
 
 const User = (props) => {
   const [ hidden, setHidden ] = React.useState(true)
+  const [ success, setSuccess ] = React.useState(false)
+  const [ failure, setFailure ] = React.useState(false)
   const handleSignOut = () => !hidden && props.signout()
 
   return (
@@ -16,8 +18,15 @@ const User = (props) => {
       <div className={`user__signout ${hidden ? 'hidden' : 'visible'}`} onClick={handleSignOut}>
         <Link href="/auth"><a><SignInSVG active={props.path === 'auth'} /></a></Link>
       </div>
-      <div className="user__avatar" onClick={() => { console.log(hidden); setHidden(!hidden) }}>
-        <img src={`/avatar/${props.auth.userId}.png`} />
+      <div className="user__avatar" onClick={() => setHidden(!hidden)}>
+        <img
+          src={`/avatar/${props.auth.userId}.png`}
+          onError={() => setFailure(true)}
+          onLoad={() => setSuccess(true)}
+          hidden={!success}
+        />
+        <img src="/avatar/null.png" hidden={!failure}/>
+        { !failure && !success && <div /> }
       </div>
 
     </div>
@@ -31,14 +40,19 @@ const UserAvatar = styled(User)`
   top: 50%;
   transform: translateY(-50%);
   display: inline-block;
-  padding: 8px;
   border-radius: 50%;
   background: ${props => props.theme.background.default};
   font-size: 0;
   cursor: pointer;
+  overflow: hidden;
   > img {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
+  }
+  > div {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
   }
 }
 .user__signout {
