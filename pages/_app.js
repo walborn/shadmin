@@ -45,6 +45,7 @@ const atom = {
     background: {
       index: '#ffd152',
       hover: '#ffc31f',
+      disabled: '#ab7d00'
     },
     border: {
       index: 'none',

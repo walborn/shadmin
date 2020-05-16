@@ -12,7 +12,8 @@ ${disabled
   ? `
 cursor: default;
 opacity: .5;
-pointer-events: none;`
+pointer-events: none;
+background: ${background.disabled};`
   : `
 cursor: pointer;
 &:focus, &:hover {

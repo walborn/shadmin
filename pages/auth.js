@@ -11,11 +11,18 @@ import useHttp from '../hooks/http'
 
 import Layout from '../components/Layout'
 
+
+const ButtonSubmit = styled(Button)`
+padding-left: 20px;
+padding-right: 20px;
+`
+
 const AuthPage = ({ className }) => {
   const router = useRouter()
   const auth = React.useContext(AuthContext)
   const { loading, error, request } = useHttp()
   const [ credentials, setCredentials ] = React.useState({ email: '', password: '' })
+  const disabled = !credentials.email || !credentials.password
 
   const handleChange = (value, name) => setCredentials({ ...credentials, [name]: value })
   const handleSignUp = async () => {
@@ -25,6 +32,7 @@ const AuthPage = ({ className }) => {
     } catch (e) {}
   }
   const handleSignIn = async () => {
+    if (disabled) return
     try {
       const data = await request('auth/signin', 'POST', { ...credentials })
       auth.login(data.token, data.userId)
@@ -36,9 +44,11 @@ const AuthPage = ({ className }) => {
     <>
       <Nav />
       <Layout className={className}>
-        <Input id="email" placeholder="email address" type="text" name="email" onChange={handleChange}/>
-        <Input id="password" placeholder="password" type="password" name="password"onChange={handleChange} />
-        <Button onClick={handleSignIn} disabled={loading}>Sign In</Button>
+        <form>
+          <Input id="email" placeholder="email address" type="text" name="email" onChange={handleChange}/>
+          <Input id="password" placeholder="password" type="password" name="password"onChange={handleChange} />
+          <ButtonSubmit onClick={handleSignIn} disabled={loading || disabled}>Sign In</ButtonSubmit>
+        </form>
       </Layout>
     </>
   )
