@@ -29,7 +29,7 @@ Head.defaultProps = {
   title: 'Shadmin',
   description: 'Shala admin panel',
   url: '',
-  ogImage: '/favicon.ico',
+  ogImage: '/favicon-mark@1200x630',
   keywords: '',
 }
 
