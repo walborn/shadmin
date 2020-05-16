@@ -35,16 +35,13 @@ const AuthPage = ({ className }) => {
     } catch (e) {}
   }
   return (
-    <>
-      <Nav />
-      <Layout className={className}>
-        <form>
-          <Input id="email" placeholder="E-mail" type="text" name="email" onChange={handleChange}/>
-          <Input id="password" placeholder="Password" type="password" name="password"onChange={handleChange} />
-          <ButtonSubmit onClick={handleSignIn} disabled={loading || disabled}>Войти</ButtonSubmit>
-        </form>
-      </Layout>
-    </>
+    <Layout className={className}>
+      <form>
+        <Input id="email" placeholder="E-mail" type="text" name="email" onChange={handleChange}/>
+        <Input id="password" placeholder="Password" type="password" name="password"onChange={handleChange} />
+        <ButtonSubmit onClick={handleSignIn} disabled={loading || disabled}>Войти</ButtonSubmit>
+      </form>
+    </Layout>
   )
 }
 

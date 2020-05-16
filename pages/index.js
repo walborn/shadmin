@@ -1,5 +1,4 @@
 import React from 'react'
-import Nav from '../components/Nav'
 import Layout from '../components/Layout'
 import useHttp from '../hooks/http'
 import Router, { useRouter } from 'next/router'
@@ -16,10 +15,7 @@ const Index = () => {
   }, [])
 
   return (
-    <>
-      <Nav />
-      <Layout title="Index | admin"></Layout>
-    </>
+    <Layout title="Index | admin" />
   )
 }
 

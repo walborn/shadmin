@@ -70,12 +70,9 @@ const Users = () => {
   )
 
   return (
-    <>
-      <Nav />
-      <Layout title="User list | Shadmin">
-        {(list || data).map((i, index) => renderCard(i, index))}
-      </Layout>
-    </>
+    <Layout title="User list | Shadmin">
+      {(list || data).map((i, index) => renderCard(i, index))}
+    </Layout>
   )
 }
 

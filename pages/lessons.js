@@ -247,7 +247,6 @@ const Lessons = () => {
 
   return (
     <>
-      <Nav />
       <Layout title="Lesson list | Shadmin">
         <Week>
         {

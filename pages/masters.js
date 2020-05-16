@@ -165,7 +165,6 @@ const Masters = () => {
 
   return (
     <>
-      <Nav />
       <Layout title="Master list | Shadmin">
         {(list || data).map((i, index) => renderCard(i, index))}
         <Add onClick={handleAdd} hidden={!token} />

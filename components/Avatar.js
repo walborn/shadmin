@@ -4,13 +4,11 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 
 import AuthContext from '../context/auth'
-import SignInSVG from '../public/avatar/signin2.svg'
+import SignInSVG from '../public/avatar/signin.svg'
 
 
 const User = (props) => {
   const [ hidden, setHidden ] = React.useState(true)
-  const [ success, setSuccess ] = React.useState(false)
-  const [ failure, setFailure ] = React.useState(false)
   const handleSignOut = () => !hidden && props.signout()
 
   return (
@@ -19,16 +17,8 @@ const User = (props) => {
         <Link href="/auth"><a><SignInSVG active={props.path === 'auth'} /></a></Link>
       </div>
       <div className="user__avatar" onClick={() => setHidden(!hidden)}>
-        <img
-          src={`/avatar/${props.auth.userId}.png`}
-          onError={() => setFailure(true)}
-          onLoad={() => setSuccess(true)}
-          hidden={!success}
-        />
-        <img src="/avatar/null.png" hidden={!failure}/>
-        { !failure && !success && <div /> }
+        <img src={`/avatar/${props.auth.userId}.png`} />
       </div>
-
     </div>
   )
 }
