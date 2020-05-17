@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Row from './Row'
 import Avatar from './Avatar'
 import LessonsSVG from '../public/svg/lessons.svg'
-import MastersSVG from '../public/svg/masters2.svg'
+import MastersSVG from '../public/svg/masters.svg'
 
 const Item = styled.a`
 text-decoration: none;

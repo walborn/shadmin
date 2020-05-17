@@ -14,3 +14,6 @@
 # debug
 yarn-debug.log*
 yarn-error.log*
+
+# custom
+_ignore/
