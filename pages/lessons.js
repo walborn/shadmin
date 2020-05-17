@@ -1,5 +1,4 @@
 import React from 'react'
-import fetch from 'node-fetch'
 import useSWR from 'swr'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
@@ -156,10 +155,9 @@ const getLessons = (lessons, token) => {
   return list.map(i => i.sort(compare))
 }
 
-const fetcher = url => fetch(`https://yogaclubom.herokuapp.com/api/${url}`).then(r => r.json())
 
 const Lessons = () => {
-  const { request, loading } = useHttp()
+  const { request, loading, fetcher } = useHttp()
   const { token } = React.useContext(AuthContext)
 
   const { data, error } = useSWR('lesson/list', fetcher)

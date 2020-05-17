@@ -7,7 +7,6 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import useAuth from '../hooks/auth'
-
 import AuthContext from '../context/auth'
 
 const atom = {

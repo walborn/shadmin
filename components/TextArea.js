@@ -27,7 +27,7 @@ const ResizableTextarea = (props) => {
     if (nextRows === prevRows) e.target.rows = nextRows
     setValue(e.target.value)
     setRows(nextRows)
-    props.onChange(e)
+    props.onChange(e.target.value)
   }
 
   return (

@@ -3,7 +3,6 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import Nav from '../components/Nav'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import AuthContext from '../context/auth'
@@ -11,11 +10,6 @@ import useHttp from '../hooks/http'
 
 import Layout from '../components/Layout'
 
-
-const ButtonSubmit = styled(Button)`
-padding-left: 20px;
-padding-right: 20px;
-`
 
 const AuthPage = ({ className }) => {
   const router = useRouter()
@@ -25,7 +19,8 @@ const AuthPage = ({ className }) => {
   const disabled = !credentials.email || !credentials.password
 
   const handleChange = (value, name) => setCredentials({ ...credentials, [name]: value })
-  const handleSignIn = async () => {
+  const handleSignIn = async (e) => {
+    e.preventDefault()
     if (disabled) return
     try {
       const data = await request('auth/signin', 'POST', { ...credentials })
@@ -36,10 +31,10 @@ const AuthPage = ({ className }) => {
   }
   return (
     <Layout className={className}>
-      <form>
-        <Input id="email" placeholder="E-mail" type="text" name="email" onChange={handleChange}/>
+      <form onSubmit={handleSignIn}>
+        <Input id="email" placeholder="E-mail" type="text" name="email" onChange={handleChange} autocapitalize="off" autocorrect="off" autocomplete="username" autofocus="autofocus"/>
         <Input id="password" placeholder="Password" type="password" name="password"onChange={handleChange} />
-        <ButtonSubmit onClick={handleSignIn} disabled={loading || disabled}>Войти</ButtonSubmit>
+        <Button type="submit" disabled={loading || disabled}>Войти</Button>
       </form>
     </Layout>
   )
@@ -56,6 +51,8 @@ ${Button} {
   display: block;
   max-width: 300px;
   margin: 20px auto;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 `
 

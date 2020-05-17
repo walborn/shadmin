@@ -1,6 +1,5 @@
 import React from 'react'
 import update from 'immutability-helper'
-import fetch from 'node-fetch'
 import useSWR from 'swr'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
@@ -81,10 +80,8 @@ text-align: center;
 }
 `
 
-const fetcher = url => fetch(`https://yogaclubom.herokuapp.com/api/${url}`).then(r => r.json())
-
 const Masters = () => {
-  const { request, loading } = useHttp()
+  const { request, loading, fetcher } = useHttp()
   const { token } = React.useContext(AuthContext)
 
   const { data, error } = useSWR('master/list', fetcher)
@@ -95,7 +92,7 @@ const Masters = () => {
   const updateList = async () => {
     try {
       const fetched = await request('master/list', 'POST',
-        { list: list.map(i => ({ id: i.id, name: i.name, description: i.description })) },
+        { list: list.map(i => ({ id: i.id || i._id, name: i.name, description: i.description })) },
         { Authorization: `Bearer ${token}` },
       )
       
