@@ -1,4 +1,6 @@
 import React from 'react'
+import { useRouter } from 'next/router'
+
 import update from 'immutability-helper'
 import useSWR from 'swr'
 import { toast } from 'react-toastify'
@@ -7,7 +9,6 @@ import styled from 'styled-components'
 import useHttp from '../hooks/http'
 import AuthContext from '../context/auth'
 
-import Nav from '../components/Nav'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
 import TextArea from '../components/TextArea'
@@ -82,7 +83,8 @@ text-align: center;
 
 const Masters = () => {
   const { request, loading, fetcher } = useHttp()
-  const { token } = React.useContext(AuthContext)
+  const { token, logout } = React.useContext(AuthContext)
+  const router = useRouter()
 
   const { data, error } = useSWR('master/list', fetcher)
   const [ list, setList ] = React.useState(data)
@@ -96,7 +98,11 @@ const Masters = () => {
         { Authorization: `Bearer ${token}` },
       )
       
-      if (fetched.message) toast.error(<div><h3>Ошибка!</h3><p>{fetched.message}</p></div>) 
+      if (fetched.message) {
+        toast.error(<div><h3>Ошибка!</h3><p>{fetched.message}</p></div>)
+        logout()
+        router.push('/auth')
+      }
       else {
         setOrigin(list)
         toast.success(<div><h3>Успешно!</h3><p>Инструкторы были обновлены</p></div>)

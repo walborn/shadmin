@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
@@ -158,8 +159,8 @@ const getLessons = (lessons, token) => {
 
 const Lessons = () => {
   const { request, loading, fetcher } = useHttp()
-  const { token } = React.useContext(AuthContext)
-
+  const { token, logout } = React.useContext(AuthContext)
+  const router = useRouter()
   const { data, error } = useSWR('lesson/list', fetcher)
   const lessons = getLessons(data, token)
   const [ list, setList ] = React.useState(lessons)
@@ -177,7 +178,11 @@ const Lessons = () => {
     try {
       const fetched = await request('lesson/list', 'POST', { list: data }, { Authorization: `Bearer ${token}` } )
       
-      if (fetched.message) toast.error(<div><h3>Ошибка!</h3><p>{fetched.message}</p></div>) 
+      if (fetched.message) {
+        toast.error(<div><h3>Ошибка!</h3><p>{fetched.message}</p></div>) 
+        logout()
+        router.push('/auth')
+      }
       else {
         const lessons = getLessons(data, token)  
         setList(lessons); setOrigin(lessons);
