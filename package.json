@@ -10,7 +10,7 @@
   "dependencies": {
     "immutability-helper": "^3.0.2",
     "next": "^9.3.6",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "polished": "^3.6.0",
     "react": "^16.13.1",
     "react-dnd": "^10.0.2",
